@@ -71,4 +71,9 @@ public class Dealer extends Participant{
     public void setFirstCardRevealed(boolean firstCardRevealed) {
         isFirstCardRevealed = firstCardRevealed;
     }
+
+    @Override
+    public boolean isBusted() {
+        return calculateActualValue() > 21;
+    }
 }

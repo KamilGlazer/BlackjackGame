@@ -80,7 +80,7 @@ public class Animation {
         }
     }
 
-    private void flipCard(ImageView cardImageView, Image backImage, Image frontImage) {
+    public void flipCard(ImageView cardImageView, Image backImage, Image frontImage) {
         ScaleTransition hideCard = new ScaleTransition(Duration.seconds(0.3), cardImageView);
         hideCard.setFromX(1);
         hideCard.setToX(0);
