@@ -25,4 +25,24 @@ public class Player extends Participant{
         this.balance += amount;
     }
 
+    public Memento save() {
+        return new Memento(this.balance);
+    }
+
+    public void restore(Memento memento){
+        this.balance = memento.balance;
+    }
+
+    public static class Memento{
+        private int balance;
+
+        public Memento(int balance) {
+            this.balance = balance;
+        }
+
+        public int getBalance() {
+            return balance;
+        }
+    }
+
 }

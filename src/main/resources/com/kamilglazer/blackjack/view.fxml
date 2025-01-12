@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Background?>
 <?import javafx.scene.image.Image?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/javafx" fx:controller="com.kamilglazer.blackjack.GameController" style="-fx-background-color: #408340;" >
+<?import javafx.geometry.Insets?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/javafx" fx:controller="com.kamilglazer.blackjack.GameController" style="-fx-background-color: #408340;" styleClass="vbox">
 
     <children>
         <HBox alignment="CENTER" spacing="10.0">
@@ -22,7 +23,10 @@
             <ImageView fx:id="dealerCard6" fitWidth="100.0" fitHeight="150.0" />
         </HBox>
 
-        <VBox alignment="CENTER" spacing="10.0">
+        <VBox alignment="CENTER" spacing="10.0" >
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+            </padding>
             <Text fx:id="resultText" text=" " />
         </VBox>
 
@@ -38,9 +42,9 @@
         </HBox>
 
         <HBox alignment="CENTER" spacing="20.0">
-            <Button fx:id="nextCardButton" text="Next Card" onAction="#nextCardButtonPushed" />
-            <Button fx:id="standButton" text="Stand" onAction="#standButtonPushed" />
-            <Button fx:id="resetButton" text="Play again" onAction="#resetButtonPushed" />
+            <Button fx:id="nextCardButton" text="Next Card" onAction="#nextCardButtonPushed" styleClass="custom-button"/>
+            <Button fx:id="standButton" text="Stand" onAction="#standButtonPushed" styleClass="custom-button"/>
+            <Button fx:id="resetButton" text="Play again" onAction="#resetButtonPushed" styleClass="custom-button" />
         </HBox>
 
         <HBox alignment="CENTER" spacing="10.0">
@@ -67,11 +71,12 @@
         </HBox>
 
         <HBox alignment="CENTER" spacing="20.0">
-            <Button fx:id="clearBet" text="Clear bet" onAction="#clearBetButtonClicked" />
-            <Button fx:id="placeBet" text="Place bet" onAction="#placeBetButtonClicked" />
+            <Button fx:id="undo" text="History" onAction="#undoBetButtonClicked" styleClass="custom-button"/>
+            <Button fx:id="clearBet" text="Clear bet" onAction="#clearBetButtonClicked" styleClass="custom-button"/>
+            <Button fx:id="placeBet" text="Place bet" onAction="#placeBetButtonClicked" styleClass="custom-button"/>
         </HBox>
 
-        <Text fx:id="betText" text="Current Bet: 0" style="-fx-font-size: 14px"/>
+        <Text fx:id="betText" text="Current Bet: 0" styleClass="currentBet"/>
 
         <HBox alignment="CENTER" spacing="20.0">
             <ImageView fx:id="chipIcon" fitWidth="80.0" fitHeight="80.0">
@@ -79,7 +84,7 @@
                     <Image url="@images/pile-chip.png" />
                 </image>
             </ImageView>
-            <Text fx:id="balance" text=" " style="-fx-font-size: 16px"/>
+            <Text fx:id="balance" text=" " styleClass="text-information"/>
         </HBox>
 
     </children>

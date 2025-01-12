@@ -1,5 +1,6 @@
 package com.kamilglazer.blackjack;
 
+import com.kamilglazer.blackjack.Players.CareTaker;
 import com.kamilglazer.blackjack.Players.Dealer;
 import com.kamilglazer.blackjack.Players.Player;
 import com.kamilglazer.blackjack.animations.Animation;
@@ -11,13 +12,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
@@ -29,6 +33,9 @@ public class GameController implements Initializable {
 
     @FXML
     private Button clearBet;
+
+    @FXML
+    private Button undo;
 
     @FXML
     private Button placeBet;
@@ -69,6 +76,7 @@ public class GameController implements Initializable {
     @FXML
     private Text balance;
 
+    private CareTaker careTaker;
     private DeckOfCards deck;
     private Player player;
     private Dealer dealer;
@@ -82,8 +90,7 @@ public class GameController implements Initializable {
         deck = DeckOfCards.getInstance();
         player = new Player(1000);
         dealer = new Dealer(false);
-
-
+        careTaker = new CareTaker(player);
         this.animation = new Animation(dealer,dealerCard1, dealerCard3, dealerCard4, dealerCard5, dealerCard6);
         startNewGame();
     }
@@ -92,7 +99,7 @@ public class GameController implements Initializable {
 
 
     public void startNewGame(){
-
+            careTaker.save();
             resultText.setText(" ");
             player.clearHand();
             dealer.clearHand();
@@ -128,7 +135,8 @@ public class GameController implements Initializable {
         if(player.isBusted()){
             animation.revealDealerCard();
             updateUI();
-            resultText.setText("You Busted! Dealer Wins.");
+            resultText.setFill(Color.RED);
+            resultText.setText("YOU BUSTED! DEALER WINS!");
             disableGameControls();
         }
     }
@@ -138,7 +146,6 @@ public class GameController implements Initializable {
         while(dealer.shouldHit()){
             dealer.addCardToHand(deck.dealTopCard());
         }
-
         animation.revealDealerCard();
         updateUI();
         determineWinner();
@@ -146,6 +153,7 @@ public class GameController implements Initializable {
 
     @FXML
     public void resetButtonPushed(){
+        resultText.setFill(Color.BLACK);
         currentBet=0;
         betText.setText("Current bet: 0");
         placeBet.setDisable(false);
@@ -160,11 +168,12 @@ public class GameController implements Initializable {
     public void placeBetButtonClicked(){
 
         if(currentBet < 50){
-            resultText.setText("Minimum bet is 20!");
+            resultText.setText("MINIMUM BET IS 20!");
             return;
         }
 
         if(player.placeBet(currentBet)){
+            resultText.setText("");
             placeBet.setDisable(true);
             clearBet.setDisable(true);
             nextCardButton.setDisable(false);
@@ -175,9 +184,23 @@ public class GameController implements Initializable {
             animation.flipCard(dealerCard2,deck.getBackOfCardImage(),dealer.getHand().get(1).getImage());
             updateUI();
         }else{
-            resultText.setText("You dont have enough money!");
+            resultText.setText("YOU DONT HAVE ENOUGH MONEY!");
         }
 
+    }
+
+    @FXML
+    private void undoBetButtonClicked() {
+        List<String> balanceHistory = careTaker.getBalanceHistory();
+        StringBuilder sb = new StringBuilder();
+        for (String balance : balanceHistory) {
+            sb.append(balance).append("\n");
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Balance");
+        alert.setHeaderText("Check your balance history...");
+        alert.setContentText(sb.toString());
+        alert.showAndWait();
     }
 
 
@@ -215,15 +238,19 @@ public class GameController implements Initializable {
 
     private void determineWinner(){
         if (dealer.isBusted()) {
-            resultText.setText("Dealer Busted! You Win!");
+            resultText.setFill(Color.LIGHTGREEN);
+            resultText.setText("DEALER BUSTED! YOU WIN!");
             player.addMoney(currentBet*2);
         } else if (player.calculateHandValue() > dealer.calculateActualValue()) {
-            resultText.setText("You Win!");
+            resultText.setFill(Color.LIGHTGREEN);
+            resultText.setText("YOU WIN!");
             player.addMoney(currentBet*2);
         } else if (player.calculateHandValue() < dealer.calculateActualValue()) {
-            resultText.setText("Dealer Wins.");
+            resultText.setFill(Color.RED);
+            resultText.setText("DEALER WINS!");
         } else {
-            resultText.setText("It's a Tie.");
+            resultText.setFill(Color.YELLOW);
+            resultText.setText("ITS A TIE!");
             player.addMoney(currentBet);
         }
         disableGameControls();
@@ -302,5 +329,6 @@ public class GameController implements Initializable {
         scaleTransition.setToY(enlarge ? 1.2 : 1.0);
         scaleTransition.play();
     }
+
 }
 

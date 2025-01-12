@@ -1,10 +1,43 @@
+
+
+
 .text-box {
-    -fx-background-color: rgba(229, 18, 18, 0.2);
-    -fx-padding: 10;
-    -fx-border-color: white;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
+    -fx-padding: 15px;
     -fx-font-size: 32px;
-    -fx-text-fill: white;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(one-pass-box, black, 5, 0.5, 0, 0);
+    -fx-opacity: 0;
+}
+
+
+.custom-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-color: #25b62a;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-font-family: "Comic Sans MS";
+}
+
+.custom-button:hover {
+    -fx-background-color: #41c446;
+}
+
+.text-information {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-font-family: "Comic Sans MS";
+}
+
+#resultText {
+    -fx-font-size: 16px;
+    -fx-font-family: "Comic Sans MS";
+}
+
+.currentBet {
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 16px;
 }
